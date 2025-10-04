@@ -1,0 +1,110 @@
+---
+alwaysApply: true
+description: Comprehensive guide for SenpAI - AI Mentorship Marketplace development
+---
+
+# SenpAI Project Guide
+
+## 🎯 Project Overview
+**SenpAI** is an AI mentorship marketplace built with SvelteKit 5 where AI mentors connect with learners for 1:1 sessions, cohort coaching, and project guidance. Think: *"Calendly + Stripe + Chat + Profiles"* for AI mentorship.
+
+## 🛠️ Tech Stack
+- **Frontend/App:** SvelteKit 5 (Runes), TypeScript, TailwindCSS
+- **Auth/DB/Realtime:** Supabase (Postgres + RLS)
+- **Payments:** Stripe Checkout + Webhooks
+- **Storage:** Supabase Storage or S3-compatible
+- **Deployment:** Vercel (`@sveltejs/adapter-vercel`)
+- **Emails (optional):** Resend/Postmark
+
+## 🗺️ Core Routes Structure
+- `/` - Landing + search (SSR, cache 60s)
+- `/mentors` - List + filters (SSR, query params)
+- `/mentors/[slug]` - Mentor profile (Book button, reviews)
+- `/book/[mentorId]` - Booking form → checkout (Client + actions)
+- `/account` - Dashboard shell (Protected)
+- `/account/bookings` - Mentee bookings (Protected)
+- `/account/mentor` - Mentor home (Protected, mentor role)
+- `/account/mentor/sessions` - Confirm/decline (Protected, mentor role)
+- `/messages` - Threads list (Protected)
+- `/messages/[threadId]` - Chat (Optimistic, optional realtime)
+- `/api/checkout` - Create Stripe session (`+server.ts`)
+- `/api/webhooks/stripe` - Stripe webhook handler (`+server.ts`)
+- `/api/upload` - Signed upload URL (`+server.ts`)
+
+## 🧱 Database Schema (Postgres/Supabase)
+Key tables:
+- `profiles` - User profiles with roles (mentor/mentee), bio, hourly rate, topics, levels
+- `availability` - Mentor availability slots (weekday, start_time, end_time)
+- `sessions` - Booked sessions with Stripe integration
+- `messages` - Threaded messaging system
+
+## 🔐 Authentication & Authorization
+- Cookie-based session in `hooks.server.ts` → sets `event.locals.user`
+- Mentor area: guard `/account/mentor/+layout.server.ts` (`locals.user.role === 'mentor'`)
+- All `/account/*`: redirect to `/` if not authenticated
+- Role-based access control: 'mentor' and 'mentee' roles
+
+## 💳 Stripe Integration Patterns
+- Use Stripe Checkout for payment processing
+- Store `stripe_session_id` and `stripe_payment_intent` in sessions table
+- Handle webhooks for payment confirmation
+- Use metadata to link Stripe sessions to database records
+
+## 📨 Messaging System
+- Implement optimistic UI updates
+- Use threaded conversations with `thread_id`
+- Support file uploads via signed URLs
+- Optional realtime updates (can start with polling)
+
+## ⚡ Performance & Caching
+- SSR pages: `setHeaders({ 'cache-control': 'public, max-age=60' })`
+- API responses: same headers → CDN cache
+- Client: store last search in Svelte store
+- Prerender: static landing, SSR profiles
+
+## 🧪 Development Milestones
+1. **MVP Core:** Auth + roles, mentors list/profile, filters
+2. **Bookings:** Checkout flow + Stripe webhooks
+3. **Dashboards:** Mentee bookings + Mentor sessions
+4. **Messaging:** Threaded chat (optimistic) → realtime
+5. **Polish:** Uploads, reviews, availability editor, caching
+
+## 📁 File Organization Guidelines
+- Server-side logic in `$lib/server/` directory
+- Database functions in `$lib/server/db.ts`
+- Type definitions in `$lib/types.ts`
+- Shared components in `$lib/components/`
+- API routes as `+server.ts` files
+- Page-specific logic in `+page.server.ts` files
+- Form actions in `+page.server.ts` actions export
+
+## 🔄 Data Loading Patterns
+- Use typed `PageServerLoad` for server-side data fetching
+- Implement proper error handling with `fail()` and `redirect()`
+- Set appropriate cache headers for SSR pages
+- Use query parameters for filtering and search
+
+## 🎨 UI/UX Guidelines
+- Use TailwindCSS for styling
+- Implement responsive design
+- Follow optimistic UI patterns for better UX
+- Include proper loading states and error handling
+- Use SvelteKit's built-in form handling
+
+## 🧪 Testing Strategy
+- Unit tests for utility functions
+- Integration tests for API endpoints
+- Component tests for UI elements
+- E2E tests for critical user flows (booking, messaging)
+
+## 📊 Key Metrics to Track
+- Time to first booking
+- Profile completion %
+- Search → profile → booking conversion
+- Message engagement rates
+
+## 🚀 Deployment Considerations
+- Use Vercel adapter for deployment
+- Configure environment variables for Stripe, Supabase
+- Set up proper CORS and security headers
+- Implement proper error logging and monitoring
