@@ -15,11 +15,19 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 // Use service role client for webhook operations (bypasses RLS)
 const supabaseAdmin = createClient<Database>(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
+// Handle GET requests (for testing/health checks)
+export const GET: RequestHandler = async () => {
+	return json({ message: 'Stripe webhook endpoint is active' })
+}
+
 export const POST: RequestHandler = async ({ request }) => {
+	console.log('Webhook received:', request.method, request.url)
+	
 	const body = await request.text()
 	const signature = request.headers.get('stripe-signature')
 
 	if (!signature) {
+		console.error('Missing stripe-signature header')
 		throw error(400, 'Missing stripe-signature header')
 	}
 
@@ -27,67 +35,82 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	try {
 		event = stripe.webhooks.constructEvent(body, signature, STRIPE_WEBHOOK_SECRET)
+		console.log('Webhook event verified:', event.type, event.id)
 	} catch (err) {
 		console.error('Webhook signature verification failed:', err)
 		throw error(400, 'Invalid signature')
 	}
 
 	// Handle different event types
-	switch (event.type) {
-		case 'checkout.session.completed': {
-			const session = event.data.object as Stripe.Checkout.Session
-			if (session.mode === 'subscription') {
-				await handleSubscriptionCheckoutCompleted(session)
+	try {
+		switch (event.type) {
+			case 'checkout.session.completed': {
+				const session = event.data.object as Stripe.Checkout.Session
+				console.log('Processing checkout.session.completed:', session.id, 'mode:', session.mode)
+				if (session.mode === 'subscription') {
+					await handleSubscriptionCheckoutCompleted(session)
+				}
+				break
 			}
-			break
+
+			case 'customer.subscription.created': {
+				const subscription = event.data.object as Stripe.Subscription
+				console.log('Processing customer.subscription.created:', subscription.id)
+				await handleSubscriptionCreated(subscription)
+				break
+			}
+
+			case 'customer.subscription.updated': {
+				const subscription = event.data.object as Stripe.Subscription
+				console.log('Processing customer.subscription.updated:', subscription.id)
+				await handleSubscriptionUpdated(subscription)
+				break
+			}
+
+			case 'customer.subscription.deleted': {
+				const subscription = event.data.object as Stripe.Subscription
+				console.log('Processing customer.subscription.deleted:', subscription.id)
+				await handleSubscriptionDeleted(subscription)
+				break
+			}
+
+			case 'invoice.payment_succeeded': {
+				const invoice = event.data.object as Stripe.Invoice
+				console.log('Processing invoice.payment_succeeded:', invoice.id)
+				await handleInvoicePaymentSucceeded(invoice)
+				break
+			}
+
+			case 'invoice.payment_failed': {
+				const invoice = event.data.object as Stripe.Invoice
+				console.log('Processing invoice.payment_failed:', invoice.id)
+				await handleInvoicePaymentFailed(invoice)
+				break
+			}
+
+			// Informational events we can ignore
+			case 'product.created':
+			case 'product.updated':
+			case 'price.created':
+			case 'price.updated':
+			case 'plan.created':
+			case 'plan.updated':
+				console.log('Ignoring informational event:', event.type)
+				// These events are sent when products/prices are created
+				// No action needed - they're automatically handled
+				break
+
+			default:
+				console.log(`Unhandled event type: ${event.type}`)
 		}
 
-		case 'customer.subscription.created': {
-			const subscription = event.data.object as Stripe.Subscription
-			await handleSubscriptionCreated(subscription)
-			break
-		}
-
-		case 'customer.subscription.updated': {
-			const subscription = event.data.object as Stripe.Subscription
-			await handleSubscriptionUpdated(subscription)
-			break
-		}
-
-		case 'customer.subscription.deleted': {
-			const subscription = event.data.object as Stripe.Subscription
-			await handleSubscriptionDeleted(subscription)
-			break
-		}
-
-		case 'invoice.payment_succeeded': {
-			const invoice = event.data.object as Stripe.Invoice
-			await handleInvoicePaymentSucceeded(invoice)
-			break
-		}
-
-		case 'invoice.payment_failed': {
-			const invoice = event.data.object as Stripe.Invoice
-			await handleInvoicePaymentFailed(invoice)
-			break
-		}
-
-		// Informational events we can ignore
-		case 'product.created':
-		case 'product.updated':
-		case 'price.created':
-		case 'price.updated':
-		case 'plan.created':
-		case 'plan.updated':
-			// These events are sent when products/prices are created
-			// No action needed - they're automatically handled
-			break
-
-		default:
-			console.log(`Unhandled event type: ${event.type}`)
+		console.log('Webhook processed successfully:', event.type, event.id)
+		return json({ received: true })
+	} catch (err) {
+		console.error('Error processing webhook event:', event.type, err)
+		// Still return 200 to acknowledge receipt - Stripe will retry failed events
+		return json({ received: true, error: 'Processing error' })
 	}
-
-	return json({ received: true })
 }
 
 async function handleSubscriptionCheckoutCompleted(session: Stripe.Checkout.Session) {
