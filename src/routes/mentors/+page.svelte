@@ -79,9 +79,9 @@
 	<!-- Header -->
 	<div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b-2 border-gray-900">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-			<h1 class="text-4xl font-bold text-gray-900 mb-3">Find Your AI Mentor</h1>
+			<h1 class="text-4xl font-bold text-gray-900 mb-3">Find Your Mentor</h1>
 			<p class="text-gray-800 text-lg">
-				Connect with expert mentors for 1:1 sessions, project guidance, and career advice
+				Connect with expert mentors in AI for 1:1 sessions, project guidance, and career advice
 			</p>
 		</div>
 	</div>

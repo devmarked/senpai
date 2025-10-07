@@ -353,13 +353,6 @@
 						>
 							Subscribe
 						</a>
-
-						<a
-							href="/messages?mentor={mentor.id}"
-							class="block w-full px-6 py-3.5 bg-white/60 border-2 border-gray-900 text-gray-900 text-center font-bold rounded-full hover:bg-gray-900 hover:text-white transition-colors duration-200 uppercase tracking-wide"
-						>
-							Send Message
-						</a>
 					</div>
 
 				</div>
