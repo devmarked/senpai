@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) 
 }
 
 export const actions: Actions = {
-  default: async ({ url, request, locals: { supabase } }) => {
+  signin: async ({ url, request, locals: { supabase } }) => {
     const formData = await request.formData()
     const email = formData.get('email') as string
     const validEmail = /^[\w-\.+]+@([\w-]+\.)+[\w-]{2,8}$/.test(email)
@@ -42,6 +42,10 @@ export const actions: Actions = {
       success: true,
       message: 'Please check your email for a magic link to log into the website.',
     }
+  },
+  signout: async ({ locals: { supabase } }) => {
+    await supabase.auth.signOut()
+    redirect(303, '/')
   },
 }
 

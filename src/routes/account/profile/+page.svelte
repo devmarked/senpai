@@ -188,21 +188,21 @@
           <!-- Role -->
           <div>
             <label for="role" class="block text-sm font-bold text-gray-900 mb-2">
-              Role *
+              Role
             </label>
             <select
               id="role"
               name="role"
               bind:value={role}
-              required
-              class="w-full px-4 py-3 border-2 border-gray-900 rounded-xl text-gray-900 font-bold focus:outline-none focus:ring-2 focus:ring-red-500"
+              disabled
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-gray-600 font-bold bg-gray-100 cursor-not-allowed"
             >
               <option value="mentee">Mentee</option>
               <option value="mentor">Mentor</option>
               <option value="both">Both</option>
             </select>
             <p class="mt-1 text-xs text-gray-600">
-              Choose "Mentor" or "Both" if you want to offer mentorship services
+              Apply to become a mentor to offer mentorship services.
             </p>
           </div>
         </div>

@@ -34,6 +34,7 @@
       <!-- Form -->
       <form
         method="POST"
+        action="?/signin"
         class="space-y-6"
         use:enhance={() => {
           loading = true

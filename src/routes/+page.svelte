@@ -1,6 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import senpAILogo from '$lib/assets/senpAI.png'
+  import senpAIMascot from '$lib/assets/senpAI.png'
+  import senpAILogoWhite from '$lib/assets/senpai_logo_white.png'
+  import aiBanner from '$lib/assets/ai_banner.png'
 
   function handleGetStarted() {
     goto('/auth/login')
@@ -21,7 +23,7 @@
         </span>
       </div>
       <h1 class="text-6xl md:text-7xl font-bold text-gray-900 mb-6">
-        Meet Your AI Mentor
+        Learn AI with Real Experts
       </h1>
       <p class="text-xl md:text-2xl text-gray-800 mb-8 max-w-3xl mx-auto">
         Connect with expert AI mentors for personalized 1:1 sessions, project guidance, and accelerated career growth
@@ -31,7 +33,8 @@
           onclick={handleFindMentors}
           class="px-8 py-4 text-lg font-bold text-white bg-gray-900 rounded-full hover:bg-red-600 transition-colors duration-200 uppercase tracking-wide border-2 border-gray-900 hover:border-red-600"
         >
-          Find Mentors
+          Find your 
+          <img src={senpAILogoWhite} alt="SenpAI Logo" class="inline-block w-30 h-10 ml-2 align-middle object-contain" />
         </button>
         <button
           onclick={handleGetStarted}
@@ -42,9 +45,9 @@
       </div>
 
       <!-- Hero Image/Logo -->
-      <div class="max-w-md mx-auto">
-        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl border-2 border-gray-900 p-8">
-          <img src={senpAILogo} alt="SenpAI" class="w-full h-auto" />
+      <div class="max-w-4xl mx-auto">
+        <div class="p-8">
+          <img src={aiBanner} alt="SenpAI" class="w-full h-auto" />
         </div>
       </div>
     </div>
@@ -222,7 +225,7 @@
         </span>
       </div>
       <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-        Find Your Perfect AI Mentor Today
+        Find Your AI Mentor Today
       </h2>
       <p class="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
         Join thousands of learners accelerating their AI careers with expert guidance

@@ -409,6 +409,41 @@
         <!-- Content -->
         <div class="px-8 py-8">
           <div class="mb-6">
+            <h4 class="text-lg font-bold text-gray-900 mb-3">How to Apply</h4>
+            <div class="bg-white/60 rounded-2xl border-2 border-gray-900 p-6 mb-6">
+              <div class="space-y-4 text-gray-700 font-medium">
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                    1
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">Send us an email</p>
+                    <p class="text-sm">Email us at <strong class="text-gray-900">mentor@senp.ai</strong> with your application</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                    2
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">Wait for our response</p>
+                    <p class="text-sm">We'll review your application and get back to you within 2-3 business days</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                    3
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">Complete your profile</p>
+                    <p class="text-sm">Once approved, we'll help you set up your mentor profile and get started</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-6">
             <h4 class="text-lg font-bold text-gray-900 mb-3">What We're Looking For</h4>
             <ul class="space-y-2 text-gray-700 font-medium">
               <li class="flex items-start gap-2">
@@ -438,43 +473,10 @@
             </ul>
           </div>
 
-          <div class="bg-white/60 rounded-2xl border-2 border-gray-900 p-6 mb-6">
-            <h4 class="text-lg font-bold text-gray-900 mb-3">How It Works</h4>
-            <div class="space-y-3 text-gray-700 font-medium">
-              <div class="flex items-start gap-3">
-                <div class="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                  1
-                </div>
-                <div>
-                  <p class="font-bold text-gray-900">Update Your Profile</p>
-                  <p class="text-sm">Change your role to "Mentor" or "Both" in your profile settings below</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                  2
-                </div>
-                <div>
-                  <p class="font-bold text-gray-900">Complete Your Profile</p>
-                  <p class="text-sm">Add your bio, expertise areas, and set your availability</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                  3
-                </div>
-                <div>
-                  <p class="font-bold text-gray-900">Start Mentoring</p>
-                  <p class="text-sm">Accept mentees, schedule sessions, and share your knowledge!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div class="bg-red-50 rounded-2xl border-2 border-gray-900 p-4 mb-6">
             <p class="text-sm text-gray-700 font-medium text-center">
               <strong class="text-gray-900">Ready to get started?</strong><br>
-              Contact us or update your profile to become a mentor and start helping others!
+              Send us an email at <strong class="text-gray-900">mentor@senp.ai</strong> and we'll get back to you soon!
             </p>
           </div>
 
@@ -487,10 +489,13 @@
               Close
             </button>
             <a
-              href="/mentors"
+              href="mailto:mentor@senp.ai?subject=Mentor Application&body=Hi,%0D%0A%0D%0AI'm interested in becoming a mentor on SenpAI. Please let me know the next steps.%0D%0A%0D%0AThanks!"
               class="flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-gray-900 border-2 border-gray-900 rounded-full text-white font-bold text-base hover:bg-red-500 hover:border-red-500 transition-all duration-200 text-center"
             >
-              Browse Mentors
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Email Us Now
             </a>
           </div>
         </div>
@@ -498,3 +503,4 @@
     </div>
   </div>
 {/if}
+

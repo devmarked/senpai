@@ -25,12 +25,12 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
       })
 
   /**
-   * User comes from the server via +layout.server.ts
+   * User and profile come from the server via +layout.server.ts
    * The server validates the user using safeGetSession() which calls getUser()
    * We don't call getSession() to avoid security warnings
    */
-  const { user } = data
+  const { user, profile } = data
 
-  return { supabase, user }
+  return { supabase, user, profile }
 }
 

@@ -190,7 +190,7 @@
                       Open Mentorship Hub
                     </a>
                     <a 
-                      href="/messages?mentee={mentorship.mentee_id}"
+                      href="/account/mentorships/{mentorship.id}?tab=messages"
                       class="inline-flex items-center justify-center px-4 py-2.5 bg-white border-2 border-gray-900 rounded-full text-gray-900 font-bold text-sm hover:bg-gray-900 hover:text-white transition-all duration-200"
                     >
                       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
